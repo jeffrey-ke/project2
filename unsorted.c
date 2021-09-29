@@ -4,20 +4,16 @@
 #include <stdlib.h>
 #include "set.h"
 
-int main(int argc, char *argv[]) {
-    return 1;
-    
-}
 
 struct set{
     int count;
     int length;
-    char* data;
+    char** data;
 };
 
 SET *createSet(int maxElts){
-    struct SET sp*;
-    sp = malloc(sizeof(struct SET));
+    SET *sp;
+    sp = malloc(sizeof(SET));
     sp->count = 0;
     sp->length = maxElts;
     sp->data = malloc(sizeof(char*) * maxElts);
@@ -47,12 +43,12 @@ void addElement(SET *sp, char *elt){
     if(search(sp, elt) == -1){
         char *new = strdup(elt);
         assert(new != NULL);
-        sp->data[count] = new;
-        sp->data++;
+        sp->data[sp->count] = new;
+        sp->count++;
     }
 }
 
-static int search(struct SET *sp, char *elt){
+int search(SET *sp, char *elt){
     assert(sp != NULL && elt != NULL);
     int i;
     for(i = 0; i < sp->count; i++){
@@ -65,7 +61,7 @@ static int search(struct SET *sp, char *elt){
 
 void removeElement(SET *sp, char *elt){
     assert(sp != NULL && elt != NULL);
-    int locn = search(sp, elt)
+    int locn = search(sp, elt);
     if(locn != -1){
         sp->data[locn] = sp->data[sp->count];
         free(sp->data[sp->count]);
@@ -88,6 +84,7 @@ char **getElements(SET *sp){
     _query = malloc(sizeof(char*) * sp->count);
     assert(_query != NULL);
     memcpy(_query, sp->data, sizeof(char*) * sp->count);
-    return _query;
+    return _query; //we return this new, copied pointer because we want the user to only tinker with a copy of the data, 
+                // NOT the actual sp->data.
 
 }
