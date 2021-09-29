@@ -85,9 +85,9 @@ char **getElements(SET *sp){
     //returning the array of pointers to strings
     assert(sp != NULL);
     char** _query;
-    _query = malloc(sizeof(sp->data));
+    _query = malloc(sizeof(char*) * sp->count);
     assert(_query != NULL);
-    memcpy(_query, sp->data, sizeof(_query));
+    memcpy(_query, sp->data, sizeof(char*) * sp->count);
     return _query;
 
 }
