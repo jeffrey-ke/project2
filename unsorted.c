@@ -9,6 +9,12 @@ int main(int argc, char *argv[]) {
     
 }
 
+struct set{
+    int count;
+    int length;
+    char* data;
+};
+
 SET *createSet(int maxElts){
     struct SET sp*;
     sp = malloc(sizeof(struct SET));
@@ -39,7 +45,10 @@ void addElement(SET *sp, char *elt){
     assert(sp != NULL && elt != NULL);
     assert(sp->count < sp->length);
     if(search(sp, elt) == -1){
-        sp->data[count + 1] = strdup(elt);
+        char *new = strdup(elt);
+        assert(new != NULL);
+        sp->data[count] = new;
+        sp->data++;
     }
 }
 
@@ -60,7 +69,9 @@ void removeElement(SET *sp, char *elt){
     if(locn != -1){
         sp->data[locn] = sp->data[sp->count];
         free(sp->data[sp->count]);
+        sp->count--;
     }
+    
 
 }
 
@@ -75,6 +86,7 @@ char **getElements(SET *sp){
     assert(sp != NULL);
     char** _query;
     _query = malloc(sizeof(sp->data));
+    assert(_query != NULL);
     memcpy(_query, sp->data, sizeof(_query));
     return _query;
 
