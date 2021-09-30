@@ -37,6 +37,17 @@ int numElements(SET *sp){
     return sp->count;
 }
 
+static int search(SET *sp, char *elt){
+    assert(sp != NULL && elt != NULL);
+    int i;
+    for(i = 0; i < sp->count; i++){
+        if(strcmp(sp->data[i], elt) == 0){
+            return i;
+        }
+    }
+    return -1;
+}
+
 void addElement(SET *sp, char *elt){
     assert(sp != NULL && elt != NULL);
     assert(sp->count < sp->length);
@@ -48,24 +59,15 @@ void addElement(SET *sp, char *elt){
     }
 }
 
-int search(SET *sp, char *elt){
-    assert(sp != NULL && elt != NULL);
-    int i;
-    for(i = 0; i < sp->count; i++){
-        if(strcmp(sp->data[i], elt) == 0){
-            return i;
-        }
-    }
-    return -1;
-}
+
 
 void removeElement(SET *sp, char *elt){
     assert(sp != NULL && elt != NULL);
     int locn = search(sp, elt);
     if(locn != -1){
-        sp->data[locn] = sp->data[sp->count];
-        free(sp->data[sp->count]);
-        sp->count--;
+        free(sp->data[locn]);
+        sp->data[locn] = sp->data[--sp->count];
+        // sp->count--;
     }
     
 
